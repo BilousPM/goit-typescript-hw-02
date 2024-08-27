@@ -1,0 +1,19 @@
+.container {
+  text-align: center;
+}
+.form {
+  padding: 28px 40px;
+  & button {
+    background-color: lightsalmon;
+    color: aliceblue;
+    padding: 10px;
+  }
+}
+
+.input {
+  border: 2px solid lightsalmon;
+  outline: none;
+  margin-right: 20px;
+  padding: 10px;
+  border-radius: 15px;
+}
