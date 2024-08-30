@@ -1,36 +1,38 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
-import { fetchPhotots } from "../../services/api";
+import { fetchPhotos } from "../../services/api";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 import s from "./App.module.css";
 import { Toaster } from "react-hot-toast";
+import { Photo, Result } from "../../types";
 
 const App = () => {
-  const [query, setQuery] = useState("");
-  const [photos, setPhotos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string>("");
 
   useEffect(() => {
-    const getphotos = async () => {
+    const getphotos = async (): Promise<void> => {
       if (!query) {
         return;
       }
       try {
         setIsError(false);
         setIsLoading(true);
-        const response = await fetchPhotots(query, page, 10);
+        const response: Result = await fetchPhotos(query, page, 10);
         setPhotos((prev) => [...prev, ...response.results]);
         setTotalPages(response.total_pages);
-      } catch (error) {
+      } catch (error: unknown) {
+        console.log(error);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -39,18 +41,18 @@ const App = () => {
     getphotos();
   }, [query, page]);
 
-  const handleSetQuery = (query) => {
+  const handleSetQuery = (query: string): void => {
     setQuery(query);
     setPhotos([]);
     setPage(1);
   };
 
-  const openModal = (imageUrl) => {
+  const openModal = (imageUrl: string): void => {
     setSelectedPhoto(imageUrl);
     setIsOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsOpen(false);
     setSelectedPhoto("");
   };

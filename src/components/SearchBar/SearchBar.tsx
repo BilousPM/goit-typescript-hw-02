@@ -1,26 +1,39 @@
 import toast, { Toaster } from "react-hot-toast";
 import s from "./SearchBar.module.css";
 import { Field, Form, Formik } from "formik";
+import { FC } from "react";
 
-const SearchBar = ({ setQuery }) => {
-  const initialValues = {
+interface SearchBarProps {
+  setQuery: (value: string) => void;
+}
+
+interface Value {
+  query: string;
+}
+
+interface Action {
+  resetForm: () => void;
+}
+
+const SearchBar: FC<SearchBarProps> = ({ setQuery }) => {
+  const initialValue = {
     query: "",
   };
 
-  const handleSubmit = (valeus, actions) => {
-    if (!valeus.query) {
+  const handleSubmit = (value: Value, actions: Action) => {
+    if (!value.query) {
       toast("Write.... and we will find it 😉", {
         duration: 3000,
       });
       return;
     }
-    setQuery(valeus.query);
+    setQuery(value.query);
     actions.resetForm();
   };
   return (
     <div>
       <Toaster position="top-right" reverseOrder={true} />
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValue} onSubmit={handleSubmit}>
         <Form className={s.form}>
           <Field
             name="query"
@@ -37,31 +50,3 @@ const SearchBar = ({ setQuery }) => {
 };
 
 export default SearchBar;
-
-// const handleSubmit = (e) => {
-//   e.preventDefault();
-//   const searchData = e.target.elements.search.value;
-//   if (!searchData) {
-//     toast("Write.... and we will find it 😉", {
-//       duration: 3000,
-//     });
-//     return;
-//   }
-//   onSubmit(searchData);
-//   e.target.reset();
-// };
-// return (
-//   <header className={s.container}>
-//     <form onSubmit={handleSubmit}>
-//       <input
-//         name="search"
-//         type="text"
-//         autoComplete="off"
-//         autoFocus
-//         placeholder="Search images and photos"
-//       />
-//       <button type="submit">Search</button>
-//     </form>
-//     <Toaster position="top-right" reverseOrder={true} />
-//   </header>
-// );

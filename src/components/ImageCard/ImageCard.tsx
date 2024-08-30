@@ -1,7 +1,13 @@
+import { FC } from "react";
+import { Photo } from "../../types";
 import s from "./ImageCard.module.css";
 
-const ImageCard = ({ data, onClick }) => {
-  console.log(data);
+interface ImageCardProps {
+  data: Photo;
+  onClick: (data: string) => void;
+}
+
+const ImageCard: FC<ImageCardProps> = ({ data, onClick }) => {
   return (
     <>
       <div>

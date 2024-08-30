@@ -1,8 +1,12 @@
 import axios from "axios";
 
-export const fetchPhotots = async (query, page = 1, perPage = 5) => {
-  const ACCESS_KEY = "wp4xAFKY3Ftqixlrg2JE9qdFAU2L2JyQZGvTnqlrbu4";
+const ACCESS_KEY: string = "wp4xAFKY3Ftqixlrg2JE9qdFAU2L2JyQZGvTnqlrbu4";
 
+export async function fetchPhotos<T>(
+  query: string,
+  page: number = 1,
+  perPage: number = 5
+): Promise<T> {
   const response = await axios.get(
     `https://api.unsplash.com/search/photos?page=1`,
     {
@@ -17,4 +21,4 @@ export const fetchPhotots = async (query, page = 1, perPage = 5) => {
     }
   );
   return response.data;
-};
+}
